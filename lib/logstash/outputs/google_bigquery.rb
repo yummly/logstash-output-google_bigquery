@@ -563,7 +563,7 @@ class LogStash::Outputs::GoogleBigQuery < LogStash::Outputs::Base
                     :job_id => job_id)
       return job_id
     rescue => e
-      @logger.error("BQ: failed to upload file: #{insert_result.response}", :exception => e)
+      @logger.error("BQ: failed to upload file: #{insert_result.status} #{insert_result.body}", :exception => e)
       # TODO(rdc): limit retries?
       sleep 1
       retry
