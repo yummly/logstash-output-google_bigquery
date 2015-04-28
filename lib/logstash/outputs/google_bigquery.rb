@@ -289,7 +289,7 @@ class LogStash::Outputs::GoogleBigQuery < LogStash::Outputs::Base
   #
   # Deleter is done in a separate thread, not holding the receive method above.
   def initialize_deleter
-    @uploader = Thread.new do
+    @deleter = Thread.new do
       @logger.debug("BQ: starting deleter")
       while true
         delete_item = @delete_queue.pop
@@ -306,7 +306,7 @@ class LogStash::Outputs::GoogleBigQuery < LogStash::Outputs::Base
                           :filename => filename,
                           :job_status => job_status)
           else
-            @logger.debug("BQ: job is done, deleting local temporary file ",
+            @logger.info("BQ: job is done, deleting local temporary file ",
                           :job_id => job_id,
                           :filename => filename,
                           :job_status => job_status)
